@@ -1,0 +1,52 @@
+{
+    "0.2 Multiplication": {},
+    "0.3 Congressional Apportionment": {},
+    "0.4 A Bad Example": {},
+    "1.4 Mergesort": {},
+    "1.9 Fast Multiplication": {},
+    "Longest Increasing Subsequence": {},
+    "2.7 Longest Increasing Subsequence, Take 2": {},
+    "2.8 Optimal Binary Search Trees": {},
+    "3.3 Interpunctio Verborum Redux": {},
+    "3.9 Optimal Binary Search Trees": {},
+    "4.1 Storing Files on Tape": {},
+    "4.2 Scheduling Classes": {},
+    "4.3 General Pattern": {},
+    "4.5 Stable Matching": {},
+    "5.3 Representations and Examples": {},
+    "5.4 Data Structures": {},
+    "5.6 Important Variants": {
+        "6.2 Detecting Cycles": [
+            {
+                "title": "Overview",
+                "content": []
+            },
+            {
+                "title": "Implicit Topological Sort",
+                "content": []
+            }
+        ]
+    },
+    "6.4 Memoization and Dynamic Programming": {},
+    "7.1 Distinct Edge Weights": {},
+    "7.2 The Only Minimum Spanning Tree Algorithm": {},
+    "7.5 Kruskal's Algorithm": {},
+    "8.3 The Only SSSP Algorithm": {},
+    "Moore's Improvement": {},
+    "9.3 Reweighting": {},
+    "9.4 Johnson's Algorithm": {},
+    "9.5 Dynamic Programming": {},
+    "9.6 Divide and Conquer": {},
+    "9.7 Funny Matrix Multiplication": {},
+    "10.4 Ford and Fulkerson's augmenting-path algorithm": {},
+    "10.5 Combining and Decomposing Flows": {},
+    "10.6 Edmonds and Karp's Algorithms": {},
+    "10.7 Further Progress": {},
+    "11.2 Vertex Capacities and Vertex-Disjoint Paths": {},
+    "11.3 Bipartite Matching": {},
+    "11.4 Tuple Selection": {},
+    "11.5 Disjoint-Path Covers": {},
+    "12.5 Reductions and SAT": {},
+    "12.13 Other Useful NP-hard Problems": {},
+    "₹12.16 On Beyond Zebra": {}
+}
