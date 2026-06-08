@@ -1,52 +1,144 @@
-{
-    "0.2 Multiplication": {},
-    "0.3 Congressional Apportionment": {},
-    "0.4 A Bad Example": {},
-    "1.4 Mergesort": {},
-    "1.9 Fast Multiplication": {},
-    "Longest Increasing Subsequence": {},
-    "2.7 Longest Increasing Subsequence, Take 2": {},
-    "2.8 Optimal Binary Search Trees": {},
-    "3.3 Interpunctio Verborum Redux": {},
-    "3.9 Optimal Binary Search Trees": {},
-    "4.1 Storing Files on Tape": {},
-    "4.2 Scheduling Classes": {},
-    "4.3 General Pattern": {},
-    "4.5 Stable Matching": {},
-    "5.3 Representations and Examples": {},
-    "5.4 Data Structures": {},
-    "5.6 Important Variants": {
-        "6.2 Detecting Cycles": [
-            {
-                "title": "Overview",
-                "content": []
-            },
-            {
-                "title": "Implicit Topological Sort",
-                "content": []
-            }
-        ]
-    },
-    "6.4 Memoization and Dynamic Programming": {},
-    "7.1 Distinct Edge Weights": {},
-    "7.2 The Only Minimum Spanning Tree Algorithm": {},
-    "7.5 Kruskal's Algorithm": {},
-    "8.3 The Only SSSP Algorithm": {},
-    "Moore's Improvement": {},
-    "9.3 Reweighting": {},
-    "9.4 Johnson's Algorithm": {},
-    "9.5 Dynamic Programming": {},
-    "9.6 Divide and Conquer": {},
-    "9.7 Funny Matrix Multiplication": {},
-    "10.4 Ford and Fulkerson's augmenting-path algorithm": {},
-    "10.5 Combining and Decomposing Flows": {},
-    "10.6 Edmonds and Karp's Algorithms": {},
-    "10.7 Further Progress": {},
-    "11.2 Vertex Capacities and Vertex-Disjoint Paths": {},
-    "11.3 Bipartite Matching": {},
-    "11.4 Tuple Selection": {},
-    "11.5 Disjoint-Path Covers": {},
-    "12.5 Reductions and SAT": {},
-    "12.13 Other Useful NP-hard Problems": {},
-    "₹12.16 On Beyond Zebra": {}
+ {
+  "Introduction": {
+    "0.1 What is an algorithm?": [{"title": "Overview", "content": []}],
+    "0.2 Multiplication": [
+      {"title": "Overview", "content": ["Lattice Multiplication", "Duplation and Mediation", "Compass and Straightedge"]}
+    ],
+    "0.3 Congressional Apportionment": [{"title": "Overview", "content": []}],
+    "0.4 A Bad Example": [{"title": "Overview", "content": []}],
+    "0.5 Describing Algorithms": [{"title": "Overview", "content": ["Specifying the Problem", "Describing the Algorithm"]}],
+    "0.6 Analyzing Algorithms": [{"title": "Overview", "content": ["Correctness", "Running Time"]}],
+    "Exercises": [{"title": "Exercises", "content": []}]
+  },
+  "Recursion": {
+    "1.1 Reductions": [{"title": "Overview", "content": []}],
+    "1.2 Simplify and Delegate": [{"title": "Overview", "content": []}],
+    "1.3 Tower of Hanoi": [{"title": "Overview", "content": []}],
+    "1.4 Mergesort": [{"title": "Overview", "content": ["Correctness", "Analysis"]}],
+    "1.5 Quicksort": [{"title": "Overview", "content": ["Correctness", "Analysis"]}],
+    "1.6 The Pattern": [{"title": "Overview", "content": []}],
+    "1.7 Recursion Trees": [{"title": "Overview", "content": ["Ignoring Floors and Ceilings Is Okay, Honest"]}],
+    "1.8 Linear-Time Selection": [{"title": "Overview", "content": ["Quickselect", "Good pivots", "Analysis", "Sanity Checking"]}],
+    "1.9 Fast Multiplication": [{"title": "Overview", "content": []}],
+    "1.10 Exponentiation": [{"title": "Overview", "content": []}],
+    "Exercises": [{"title": "Exercises", "content": []}]
+  },
+  "Backtracking": {
+    "2.1 N Queens": [{"title": "Overview", "content": []}],
+    "2.2 Game Trees": [{"title": "Overview", "content": []}],
+    "2.3 Subset Sum": [{"title": "Overview", "content": ["Correctness", "Analysis", "Variants"]}],
+    "2.4 The General Pattern": [{"title": "Overview", "content": []}],
+    "2.5 Text Segmentation": [{"title": "Overview", "content": ["Index Formulation", "Analysis", "Variants"]}],
+    "2.6 Longest Increasing Subsequence": [{"title": "Overview", "content": []}],
+    "2.7 Longest Increasing Subsequence, Take 2": [{"title": "Overview", "content": []}],
+    "2.8 Optimal Binary Search Trees": [{"title": "Overview", "content": ["Analysis"]}],
+    "Exercises": [{"title": "Exercises", "content": []}]
+  },
+  "Dynamic Programming": {
+    "3.1 Matravrtta": [{"title": "Overview", "content": ["Backtracking Can Be Slow", "Memoization: Remember Everything", "Dynamic Programming: Fill Deliberately"]}],
+    "3.2 Aside: Even Faster Fibonacci Numbers": [{"title": "Overview", "content": ["Whoa! Not so fast!"]}],
+    "3.3 Interpunctio Verborum Redux": [{"title": "Overview", "content": []}],
+    "3.4 The Pattern: Smart Recursion": [{"title": "Overview", "content": []}],
+    "3.5 Warning: Greed is Stupid": [{"title": "Overview", "content": []}],
+    "3.6 Longest Increasing Subsequence": [{"title": "Overview", "content": ["First Recurrence: Is This Next?", "Second Recurrence: What’s Next?"]}],
+    "3.7 Edit Distance": [{"title": "Overview", "content": ["Recursive Structure", "Recurrence", "Dynamic Programming"]}],
+    "3.8 Subset Sum": [{"title": "Overview", "content": []}],
+    "3.9 Optimal Binary Search Trees": [{"title": "Overview", "content": []}],
+    "3.10 Dynamic Programming on Trees": [{"title": "Overview", "content": []}],
+    "Exercises": [{"title": "Exercises", "content": []}]
+  },
+  "Greedy Algorithms": {
+    "4.1 Storing Files on Tape": [{"title": "Overview", "content": []}],
+    "4.2 Scheduling Classes": [{"title": "Overview", "content": []}],
+    "4.3 General Pattern": [{"title": "Overview", "content": []}],
+    "4.4 Huffman Codes": [{"title": "Overview", "content": []}],
+    "4.5 Stable Matching": [{"title": "Overview", "content": ["Some Bad Ideas", "The Boston Pool and Gale-Shapley Algorithms", "Running Time", "Correctness", "Optimality!"]}],
+    "Exercises": [{"title": "Exercises", "content": []}]
+  },
+  "Basic Graph Algorithms": {
+    "5.1 Introduction and History": [{"title": "Overview", "content": []}],
+    "5.2 Basic Definitions": [{"title": "Overview", "content": []}],
+    "5.3 Representations and Examples": [{"title": "Overview", "content": []}],
+    "5.4 Data Structures": [{"title": "Overview", "content": ["Adjacency Lists", "Adjacency Matrices", "Comparison"]}],
+    "5.5 Whatever-First Search": [{"title": "Overview", "content": ["Analysis"]}],
+    "5.6 Important Variants": [{"title": "Overview", "content": ["Stack: Depth-First", "Queue: Breadth-First", "Priority Queue: Best-First", "Disconnected Graphs", "Directed Graphs"]}],
+    "5.7 Graph Reductions: Flood Fill": [{"title": "Overview", "content": []}],
+    "Exercises": [{"title": "Exercises", "content": []}]
+  },
+  "Depth-First Search": {
+    "6.1 Preorder and Postorder": [{"title": "Overview", "content": ["Classifying Vertices and Edges"]}],
+    "6.2 Detecting Cycles": [{"title": "Overview", "content": []}],
+    "6.3 Topological Sort": [{"title": "Overview", "content": ["Implicit Topological Sort"]}],
+    "6.4 Memoization and Dynamic Programming": [{"title": "Overview", "content": ["Dynamic Programming in Dags"]}],
+    "6.5 Strong Connectivity": [{"title": "Overview", "content": []}],
+    "6.6 Strong Components in Linear Time": [{"title": "Overview", "content": ["Kosaraju and Sharir’s Algorithm", "Tarjan’s Algorithm"]}],
+    "Exercises": [{"title": "Exercises", "content": []}]
+  },
+  "Minimum Spanning Trees": {
+    "7.1 Distinct Edge Weights": [{"title": "Overview", "content": []}],
+    "7.2 The Only Minimum Spanning Tree Algorithm": [{"title": "Overview", "content": []}],
+    "7.3 Boruvka's Algorithm": [{"title": "Overview", "content": ["This is the MST Algorithm You Want"]}],
+    "7.4 Jarnik's (Prim's) Algorithm": [{"title": "Overview", "content": ["Improving Jarnik’s Algorithm"]}],
+    "7.5 Kruskal's Algorithm": [{"title": "Overview", "content": []}],
+    "Exercises": [{"title": "Exercises", "content": []}]
+  },
+  "Shortest Paths": {
+    "8.1 Shortest Path Trees": [{"title": "Overview", "content": []}],
+    "8.2 Negative Edges": [{"title": "Overview", "content": []}],
+    "8.3 The Only SSSP Algorithm": [{"title": "Overview", "content": []}],
+    "8.4 Unweighted Graphs: Breadth-First Search": [{"title": "Overview", "content": []}],
+    "8.5 Directed Acyclic Graphs: Depth-First Search": [{"title": "Overview", "content": []}],
+    "8.6 Best-First: Dijkstra's Algorithm": [{"title": "Overview", "content": ["No Negative Edges", "Negative Edges"]}],
+    "8.7 Relax ALL the Edges: Bellman-Ford": [{"title": "Overview", "content": ["Moore’s Improvement", "Dynamic Programming Formulation"]}],
+    "Exercises": [{"title": "Exercises", "content": []}]
+  },
+  "All-Pairs Shortest Paths": {
+    "9.1 Introduction": [{"title": "Overview", "content": []}],
+    "9.2 Lots of Single Sources": [{"title": "Overview", "content": []}],
+    "9.3 Reweighting": [{"title": "Overview", "content": []}],
+    "9.4 Johnson's Algorithm": [{"title": "Overview", "content": []}],
+    "9.5 Dynamic Programming": [{"title": "Overview", "content": []}],
+    "9.6 Divide and Conquer": [{"title": "Overview", "content": []}],
+    "9.7 Funny Matrix Multiplication": [{"title": "Overview", "content": []}],
+    "9.8 (Kleene-Roy-)Floyd-Warshall(-Ingerman)": [{"title": "Overview", "content": ["Polynomial Space", "Exponential Time", "Excelsior!"]}],
+    "Exercises": [{"title": "Exercises", "content": []}]
+  },
+  "Maximum Flows & Minimum Cuts": {
+    "10.1 Flows": [{"title": "Overview", "content": []}],
+    "10.2 Cuts": [{"title": "Overview", "content": []}],
+    "10.3 The Maxflow-Mincut Theorem": [{"title": "Overview", "content": []}],
+    "10.4 Ford and Fulkerson's augmenting-path algorithm": [{"title": "Overview", "content": ["Irrational Capacities"]}],
+    "10.5 Combining and Decomposing Flows": [{"title": "Overview", "content": []}],
+    "10.6 Edmonds and Karp's Algorithms": [{"title": "Overview", "content": ["Fattest Augmenting Paths", "Shortest Augmenting Paths"]}],
+    "10.7 Further Progress": [{"title": "Overview", "content": []}],
+    "Exercises": [{"title": "Exercises", "content": []}]
+  },
+  "Applications of Flows and Cuts": {
+    "11.1 Edge-Disjoint Paths": [{"title": "Overview", "content": []}],
+    "11.2 Vertex Capacities and Vertex-Disjoint Paths": [{"title": "Overview", "content": []}],
+    "11.3 Bipartite Matching": [{"title": "Overview", "content": []}],
+    "11.4 Tuple Selection": [{"title": "Overview", "content": ["Exam Scheduling"]}],
+    "11.5 Disjoint-Path Covers": [{"title": "Overview", "content": ["Minimal Faculty Hiring"]}],
+    "11.6 Baseball Elimination": [{"title": "Overview", "content": []}],
+    "11.7 Project Selection": [{"title": "Overview", "content": []}],
+    "Exercises": [{"title": "Exercises", "content": []}]
+  },
+  "NP-Hardness": {
+    "12.1 A Game You Can't Win": [{"title": "Overview", "content": []}],
+    "12.2 P versus NP": [{"title": "Overview", "content": []}],
+    "12.3 NP-hard, NP-easy, and NP-complete": [{"title": "Overview", "content": ["Formal Definitions (HC SVNT DRACONES)"]}],
+    "12.5 Reductions and SAT": [{"title": "Overview", "content": []}],
+    "12.6 3SAT (from CIRCUITSAT)": [{"title": "Overview", "content": []}],
+    "12.7 Maximum Independent Set (from 3SAT)": [{"title": "Overview", "content": []}],
+    "12.8 The General Pattern": [{"title": "Overview", "content": []}],
+    "12.9 Clique and Vertex Cover (from Independent Set)": [{"title": "Overview", "content": []}],
+    "12.10 Graph Coloring (from 3SAT)": [{"title": "Overview", "content": []}],
+    "12.11 Hamiltonian Cycle": [{"title": "Overview", "content": ["From Vertex Cover", "From 3SAT", "Variants and Extensions"]}],
+    "12.12 Subset Sum (from Vertex Cover)": [{"title": "Overview", "content": []}],
+    "12.13 Other Useful NP-hard Problems": [{"title": "Overview", "content": []}],
+    "12.14 Choosing the Right Problem": [{"title": "Overview", "content": []}],
+    "12.15 A Frivolous Real-World Example": [{"title": "Overview", "content": []}],
+    "12.16 On Beyond Zebra": [{"title": "Overview", "content": ["Polynomial Space", "Exponential Time", "Excelsior!"]}],
+    "Exercises": [{"title": "Exercises", "content": []}]
+  }
 }
