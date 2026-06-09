@@ -7,7 +7,7 @@ import re
 
 def run_initialization_pipeline():
     input_dir = Path("./data/raw/Algorithms-JeffE")
-    output_path = Path("./concept_map.json")
+    output_path = Path("data/concept_map.json")
 
     if not input_dir.exists():
         print(f"❌ Critical Error: Directory {input_dir} not found.")
