@@ -1,5 +1,5 @@
 import math
-from typing import Tuple
+
 
 def calculate_sm2_mutation(q: int, interval: int, ease_factor: float, repetitions: int) -> tuple[int, float, int]:
     """
@@ -12,7 +12,8 @@ def calculate_sm2_mutation(q: int, interval: int, ease_factor: float, repetition
     if q <3:
         next_interval = 1
         next_repetitions = 0
-        next_ease_factor = ease_factor
+        ef_delta = (0.1 - (5 - q) * (0.08 + (5 - q) * 0.02))
+        next_ease_factor = ease_factor +ef_delta
 
     else:
         if repetitions == 0:
@@ -23,9 +24,8 @@ def calculate_sm2_mutation(q: int, interval: int, ease_factor: float, repetition
             next_interval = int(math.ceil(interval * ease_factor))
 
         next_repetitions = repetitions + 1
-        next_ease_factor = ease_factor +(.1 - (5-q) *(.08 + (5 - q) * .02))
+        next_ease_factor = ease_factor
 
-    if next_ease_factor <1.3:
-        next_ease_factor = 1.3
+    next_ease_factor = max(1.3, round(next_ease_factor, 4))
 
-    return next_interval, round(next_ease_factor, 4), next_repetitions
+    return next_interval, next_ease_factor, next_repetitions
