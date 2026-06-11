@@ -19,3 +19,8 @@ ledger_ops.py: Replaced manual cursor management with with context mangers for a
 add test_generation.py and models.py downloaded ollama. <br>
 redirected learning style, from right/wrong-> grading and everyproblem hint TO after some number force review. <br>
 (6/11) Continue on phase 3
+Updated ledger_ops.py, db_setup.py, evaluation py. 
+test_logic_integration.py success. Check this with Dante. 
+added functions in ledger_ops, table in db_setup, evaluation.py<br>
+Updated test_logic_integration.py with real ID from the DB fixed minor things.<br>
+Change comments into English, initializing phase 4. 

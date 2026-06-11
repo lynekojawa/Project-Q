@@ -42,9 +42,16 @@ def initialize_database():
         logical_reasoning_gap TEXT,
         FOREIGN KEY(concept_id) REFERENCES concept_nodes(concept_id)
     );
-    """)
-    conn.commit()
-    conn.close()
+    
+    CREATE TABLE IF NOT EXISTS assessment_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        concept_id TEXT,
+        result TEXT, -- 'Passed' or 'Failed'
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY(concept_id) REFERENCES concept_nodes(concept_id)
+    );
+     """)
+
 
 def seed_database():
     if not JSON_PATH.exists():
@@ -59,20 +66,20 @@ def seed_database():
         cursor = conn.cursor()
         node_count = 0
 
-    for chapter_title, sections in data.items():
-        chapter_slug = slugify(chapter_title)
+        for chapter_title, sections in data.items():
+            chapter_slug = slugify(chapter_title)
 
-        for section_title, nodes in sections.items():
-            match = re.match(r'^([\d\.]+)', section_title)
-            num_part = match.group(1).replace('.', '_') if match else "0"
-            section_clean = slugify(section_title)
-            concept_id = f"{chapter_slug}_{num_part}_{section_clean}"
+            for section_title, nodes in sections.items():
+                match = re.match(r'^([\d\.]+)', section_title)
+                num_part = match.group(1).replace('.', '_') if match else "0"
+                section_clean = slugify(section_title)
+                concept_id = f"{chapter_slug}_{num_part}_{section_clean}"
 
-            cursor.execute("""
-                INSERT OR IGNORE INTO concept_nodes (concept_id, concept_title, parent_chapter)
-                VALUES (?, ?, ?)
-            """, (concept_id, section_title, chapter_title))
-            node_count += 1
+                cursor.execute("""
+                    INSERT OR IGNORE INTO concept_nodes (concept_id, concept_title, parent_chapter)
+                    VALUES (?, ?, ?)
+                """, (concept_id, section_title, chapter_title))
+                node_count += 1
 
         conn.commit()
 

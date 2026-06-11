@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).parent.resolve()
+PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
@@ -13,16 +13,11 @@ from db.ledger_ops import fetch_daily_review_queue
 
 def run_inference_validation_test():
     print("===Phase 3: OLLAMA Structured Generation Test====")
-    print("Reading Daily review queue from ledger")
+
     queue = fetch_daily_review_queue()
+    target_concept = queue[0]['concept_title'] if queue else "0.1 What is an algorithm?"
 
-    if not queue:
-        print("Queue empty or all nodes synchronized. Pulling baseline fallback concept node")
-        target_concept = "0.2 Multiplication"
-    else:
-        target_concept = queue[0]['concept_title']
-
-    print(f"Target Concept SElected: '{target_concept}'")
+    print(f"Target Concept Selected: '{target_concept}'")
     print("Invoking local LLM context generation layer (this may take a moment)...")
 
     system_prompt = (
@@ -31,7 +26,7 @@ def run_inference_validation_test():
         "Do not include conversational filler or markdown notes outside the JSON structure."
     )
 
-    user_prompt = f"Generate an adcanced quiz package for the topic: '{target_concept}' matching the technical depth of Jeff Erickson's 'Algorithms'."
+    user_prompt = f"Generate an advanced quiz package for the topic: '{target_concept}' matching the technical depth of Jeff Erickson's 'Algorithms'."
 
     try:
         response = ollama.chat(
@@ -44,23 +39,18 @@ def run_inference_validation_test():
             options={"temperature": 0.0}
         )
 
-        raw_output = response["message"]["content"]
+        raw_output = response.message.content
         print("\n Raw Token Stream Captured from Ollama")
 
         validated_package = ConceptQuizPackage.model_validate_json(raw_output)
         print("Success: Data contract verified type-safe. Pydantic verification passed")
-
+        #remove truncation when turning into UI
         print("\n---Compiled Data Payload Preview----")
         print(json.dumps(validated_package.model_dump(), indent = 2, ensure_ascii = False)[:1000] + "\n...")
 
-    except ollama.ResponseError as ollama_err:
-        print(f"❌ Ollama Daemon Connectivity Exception: {str(ollama_err)}")
-        print("Action Required: Verify background process execution via 'ollama list'")
-    except ValidationError as pydantic_err:
-        print(f"❌ Schema Validation Breach! Token format diverged from structural constraints.")
-        print(f"Error Trace:\n{pydantic_err.json()}")
-    except Exception as general_err:
-        print(f"❌ Unexpected Execution Interruption: {str(general_err)}")
+    except Exception as e:
+
+        print(f"❌ Test Failed: {str(e)}")
 if __name__ == "__main__":
     run_inference_validation_test()
 
