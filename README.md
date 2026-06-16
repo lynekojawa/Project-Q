@@ -23,4 +23,11 @@ Updated ledger_ops.py, db_setup.py, evaluation py.
 test_logic_integration.py success. Check this with Dante. 
 added functions in ledger_ops, table in db_setup, evaluation.py<br>
 Updated test_logic_integration.py with real ID from the DB fixed minor things.<br>
-Change comments into English, initializing phase 4. 
+Change comments into English, initializing phase 4.<br>
+(6/16) Continue on phase 4, catching up and trying to figure out where I left off. Two of my agents(ORION and PODO aren't synced) therefore 
+need to find where to continue<br>
+Create: skill_tree.py, socratic_mentor.py<br>
+So main confusion and error was coming from unmatched table and variabble for example concept_title in evaluation.py and skill_tree.py<br>
+and prvious test files so I had to remove concept title and re-aligned the variable names, One good sides of this structured <br>
+folder and file is that it is quite easy to catch, one downside is that as an architecture I need to remember which folder has which<br>
+and using sqlite means there is no visible table unless checking inside terminal, that's trickier than supabase/postgreSQL<br>

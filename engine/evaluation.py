@@ -11,7 +11,7 @@ from db.ledger_ops import log_assessment_result, log_cognitive_fault, get_recent
 
 PASS_Q_THRESHOLD = 4
 
-def process_node_review(concept_id: str, concept_title: str, current_interval: int, current_ef: float,
+def process_node_review(concept_id: str,  current_interval: int, current_ef: float,
                         current_rep: int, user_score: int, reasoning_gap:str = None) -> dict:
     """Orchestrates the transactional execution loop between tracking evaluation scores,
     running the SM-2 mutation calculator, and logging errors back to the database."""

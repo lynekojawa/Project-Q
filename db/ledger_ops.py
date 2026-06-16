@@ -20,7 +20,7 @@ def fetch_daily_review_queue():
             """)
         return [dict(row) for row in cursor.fetchall()]
     except sqlite3.Error as e:
-        print(f"DB QUery Error:{e}")
+        print(f"DB Query Error:{e}")
         return []
 
 
