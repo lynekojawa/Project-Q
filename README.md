@@ -31,3 +31,5 @@ So main confusion and error was coming from unmatched table and variabble for ex
 and prvious test files so I had to remove concept title and re-aligned the variable names, One good sides of this structured <br>
 folder and file is that it is quite easy to catch, one downside is that as an architecture I need to remember which folder has which<br>
 and using sqlite means there is no visible table unless checking inside terminal, that's trickier than supabase/postgreSQL<br>
+(6/17) Yesterday re-directed the project. there was leaking on inital guide, agents were too excited about Duolingo concept<br>
+However that's not exactly I was trying it is also part of it. Today we are jumping into phase 5 which will be summary getting pdf part<br>

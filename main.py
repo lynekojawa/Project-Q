@@ -1,95 +1,72 @@
-import json
-import os
+import sys
+import subprocess
+import urllib.request
 from pathlib import Path
-from ingestion.sanitizer import sanitize_markdown
-from ingestion.parser import parse_toc_to_json
-import re
 
-def run_initialization_pipeline():
-    input_dir = Path("./data/raw/Algorithms-JeffE")
-    output_path = Path("data/concept_map.json")
+PROJECT_ROOT = Path(__file__).parent.resolve()
+DB_PATH = PROJECT_ROOT / "db" / "codex_ledger.db"
 
-    if not input_dir.exists():
-        print(f"❌ Critical Error: Directory {input_dir} not found.")
-        return
+def enter_maintenance_mode():
+    """Terminal-isolated recovery protocol to stabilize ledger inconsistencies."""
+    print("\n⚠️ [Maintenance Mode] Critical state detected. Imperial Intervention Required.")
+    print("Select an action to stabilize the system:")
+    print("1. [D]elete & Rebuild: Nuke current DB and start fresh.")
+    print("2. [E]xit: Terminate session.")
+    while True:
+        choice = input("Enter choice (D/E): ").strip().upper()
+        if choice == "D":
+            if DB_PATH.exists():
+                try:
+                    DB_PATH.unlink()
+                except PermissionError:
+                    print("❌ Failure: Database binary file is currently locked by an active process.")
+                    return False
+            print("Database cleared. Reinitializing schema tracking paths...")
+            sys.path.append(str(PROJECT_ROOT))
+            from db.db_setup import initialize_database, seed_database
+            initialize_database()
+            seed_database()
+            print("Database reconstructed successfully. Resuming boot track...")
+            return True
+        elif choice == 'E':
+            print("Shutting down")
+            sys.exit(0)
+        else:
+            print("Invalid input")
 
-    target_files = list(input_dir.glob("*.md"))
+def run_preflight_checks():
+    print("[System Boot] Initializing Project Q preflight check protocol...")
 
-    if not target_files:
-        print(f"Tracking Error: No markdown source files discovered inside {input_dir.resolve()}")
-        print("Action Required: Please ensure your Erickson textbook .md file is placed there.")
-        return
+    print("Checking local Ollama daemon connectivity (http://localhost:11434)...")
+    try:
+        with urllib.request.urlopen("http://localhost:11434", timeout=2) as response:
+            if response.status == 200:
+                print("Ollama Client Connection: Online")
+    except Exception:
+        print("\n Critical Boot Failure: Local Ollama is unreachable")
+        print("Action Required: Execute 'ollama serve' in your terminal and ensure model is pulled via 'ollama pull llama3.1'")
+        sys.exit(1)
 
-    source_file = target_files[0]
-    print(f"Executing phase 1 pipeline target: {source_file.name}")
+    print("Checking relational ledger status...")
+    if not DB_PATH.exists():
+        print("Warning: 'codex_ledger.db' not found. Launching auto initialization sequence")
+        enter_maintenance_mode()
+    else:
+        print("Relational Ledger Connection: Secure")
+
+    print("All environment safety guards passed. Spawning Streamlit Frontend Console Framework... \n")
+
+def launch_application():
+    """Spawns the streamlit server process pointing explicitly to UI module"""
+    ui_script_path = PROJECT_ROOT / "ui" / "skill_tree.py"
 
     try:
-        print("-> Running sanitization step...")
-        sanitized_text = sanitize_markdown(source_file)
-
-        print("-> Compiling structural hierarchy ...")
-        master_hierarchy = parse_toc_to_json(sanitized_text)
-
-
-        print(f"-> Writing unified tracking mp to {output_path}")
-        with open(output_path, "w", encoding="utf-8") as json_file:
-            json.dump(master_hierarchy, json_file, indent=4, ensure_ascii=False)
-
-        print("\n Phase 1 Ingestion fully operational!")
-        print(f"Node compiled. Total root chapters discovered: {len(master_hierarchy.keys())}")
-
-    except Exception as error:
-        print(f"\n Pipeline Exception Caught during exraction run: {str(error)}")
-
-    def full_structure_scan(sanitized_text: str):
-        lines = sanitized_text.splitlines()
-
-        print("=== HEADING LEVELS ===")
-        heading_counts = {}
-        for line in lines:
-            stripped = line.strip()
-            if stripped.startswith("#"):
-                level = len(stripped) - len(stripped.lstrip("#"))
-                heading_counts[level] = heading_counts.get(level, 0) + 1
-        for level, count in sorted(heading_counts.items()):
-            print(f"  {'#' * level}: {count} occurrences")
-
-        print("\n=== SAMPLE # HEADINGS (first 20) ===")
-        count = 0
-        for i, line in enumerate(lines):
-            stripped = line.strip()
-            if stripped.startswith("# ") and count < 20:
-                clean = re.sub(r'<span[^>]*>.*?</span>', '', stripped)
-                clean = re.sub(r'\*\*(.*?)\*\*', r'\1', clean)
-                clean = re.sub(r'^[#\s]+', '', clean).strip()
-                print(f"  Line {i:4d}: {repr(clean[:60])}")
-                count += 1
-
-        print("\n=== SAMPLE ## HEADINGS (first 20) ===")
-        count = 0
-        for i, line in enumerate(lines):
-            stripped = line.strip()
-            if stripped.startswith("## ") and count < 20:
-                clean = re.sub(r'<span[^>]*>.*?</span>', '', stripped)
-                clean = re.sub(r'\*\*(.*?)\*\*', r'\1', clean)
-                clean = re.sub(r'^[#\s]+', '', clean).strip()
-                print(f"  Line {i:4d}: {repr(clean[:60])}")
-                count += 1
-
-        print("\n=== TABLE ROW SAMPLES (first 10) ===")
-        count = 0
-        for i, line in enumerate(lines):
-            stripped = line.strip()
-            if stripped.startswith("|") and count < 10:
-                print(f"  Line {i:4d}: {repr(stripped[:80])}")
-                count += 1
-
-    full_structure_scan(sanitized_text)
-
-
+        subprocess.run([sys.executable, "-m", "streamlit", "run", str(ui_script_path)], check=True)
+    except KeyboardInterrupt:
+        print("\n[System Shutdown] Stopping server threads. Core states safely persisted to ledger. Goodbye")
+    except Exception as e:
+        print(f"\n Runtime Exception Encountered: {str(e)}")
 
 if __name__ == "__main__":
-    os.makedirs("./raw_inputs", exist_ok=True)
-    run_initialization_pipeline()
-
-
+    run_preflight_checks()
+    launch_application()
