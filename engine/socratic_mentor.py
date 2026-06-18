@@ -1,6 +1,6 @@
-import sqlite3
 import ollama
 from pathlib import Path
+from db.ledger_ops import get_recent_error_logs
 
 
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
@@ -11,15 +11,7 @@ def generate_socratic_hint(concept_title: str, faulty_answer: str, concept_id: s
     """
     Read the past fail logs, generate socratics style hints
     """
-
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute(
-        "SELECT logical_reasoning_gap FROM cognitive_error_logs WHERE concept_id = ? ORDER BY error_timestamp DESC LIMIT 2",
-        (concept_id,)
-    )
-    logs = cursor.fetchall()
-    conn.close()
+    logs = get_recent_error_logs(concept_id)
 
     historical_gaps = " | ".join([row[0] for row in logs]) if logs else "No prior history."
 
@@ -48,5 +40,5 @@ def generate_socratic_hint(concept_title: str, faulty_answer: str, concept_id: s
             options={"temperature": 0.4}
         )
         return response.message.content.strip()
-    except Exception as e:
+    except Exception:
         return f"Mentor is currently busy. Focus on the core logic: {concept_title}"

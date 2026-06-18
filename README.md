@@ -33,3 +33,6 @@ folder and file is that it is quite easy to catch, one downside is that as an ar
 and using sqlite means there is no visible table unless checking inside terminal, that's trickier than supabase/postgreSQL<br>
 (6/17) Yesterday re-directed the project. there was leaking on inital guide, agents were too excited about Duolingo concept<br>
 However that's not exactly I was trying it is also part of it. Today we are jumping into phase 5 which will be summary getting pdf part<br>
+(6/18) Started with Dante's commnets separating some functions into ledger_ops.py, the files are containing more functions and easy to get confused. <br>
+Before I was losing all of my mind I created the file that tracks the functions only. After all the project is over, will go over again to see if there<br>
+is any functions that are not used. Jumping into pdf_prosessor today. pdf_processor and summary pipelines and many movements happend.<br>

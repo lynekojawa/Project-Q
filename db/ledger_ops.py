@@ -85,7 +85,6 @@ def check_consecutive_failure(concept_id: str) -> bool:
             failure_list = [int(r[0]) for r in results]
 
             is_consecutive = (len(failure_list) == 3 and all(val == 0 for val in failure_list))
-            print(f"DEBUG: Consecutive logic result for {concept_id}: {is_consecutive}")
             return is_consecutive
 
     except sqlite3.Error as e:
@@ -99,3 +98,50 @@ def reset_failure_history(concept_id: str):
 def apply_mentoring_recovery(concept_id: str):
     with sqlite3.connect(DB_PATH) as conn:
         conn.execute("UPDATE concept_nodes SET ease_factor = ease_factor + .2 WHERE concept_id = ?", (concept_id,))
+
+def get_macro_metrics():
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM concept_nodes")
+            total = cursor.fetchone()[0]
+            cursor.execute("SELECT COUNT(*) FROM concept_nodes WHERE mastery_score >= 0.80")
+            mastered = cursor.fetchone()[0]
+        return total, mastered, len(fetch_daily_review_queue())
+    except sqlite3.Error as e:
+        print(f"DB Error: {e}")
+        return 0, 0, 0
+
+
+def get_chapters_and_nodes() -> dict:
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM concept_nodes ORDER BY parent_chapter, concept_id")
+            rows = cursor.fetchall()
+
+        data_tree = {}
+        for row in rows:
+            chap = row["parent_chapter"]
+            if chap not in data_tree:
+                data_tree[chap] = []
+            data_tree[chap].append(dict(row))
+        return data_tree
+    except sqlite3.Error as e:
+        print(f"DB Error: {e}")
+        return {}
+def get_recent_error_logs(concept_id: str, limit: int = 2) -> list:
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT logical_reasoning_gap FROM cognitive_error_logs
+                WHERE concept_id = ?
+                ORDER BY error_timestamp DESC LIMIT ?
+            """, (concept_id, limit))
+
+            return [row[0] for row in cursor.fetchall()]
+    except sqlite3.Error as e:
+        print(f"DB Error (Mentor Logs): {e}")
+        return []

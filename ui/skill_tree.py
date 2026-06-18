@@ -5,41 +5,10 @@ PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-from db.ledger_ops import fetch_daily_review_queue
+from db.ledger_ops import get_chapters_and_nodes, get_macro_metrics
 from engine.evaluation import process_node_review
 from engine.socratic_mentor import generate_socratic_hint
 import streamlit as st
-import sqlite3
-
-DB_PATH = PROJECT_ROOT / "db" / "codex_ledger.db"
-
-
-def get_macro_metrics():
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute("SELECT COUNT(*) FROM concept_nodes")
-    total = cursor.fetchone()[0]
-    cursor.execute("SELECT COUNT(*) FROM concept_nodes WHERE mastery_score >= 0.80")
-    mastered = cursor.fetchone()[0]
-    conn.close()
-    return total, mastered, len(fetch_daily_review_queue())
-
-
-def get_chapters_and_nodes():
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM concept_nodes ORDER BY parent_chapter, concept_id")
-    rows = cursor.fetchall()
-    conn.close()
-
-    data_tree = {}
-    for row in rows:
-        chap = row["parent_chapter"]
-        if chap not in data_tree:
-            data_tree[chap] = []
-        data_tree[chap].append(dict(row))
-    return data_tree
 
 
 def render_ui_dashboard():
@@ -68,19 +37,26 @@ def render_ui_dashboard():
             st.header(f"Chapter: {chapter_name}")
             for node in data_tree[chapter_name]:
                 node_id = node['concept_id']
-                expander_title = f"{node['concept_title']} [Int: {node['current_interval']}d | Reps: {node['repetitions']}]"
+                expander_title = f"{node['concept_title']} [Score: {node['mastery_score']:.0%} | Int: {node['current_interval']}d | Reps: {node['repetitions']}]"
 
                 with st.expander(expander_title):
                     score_input = st.slider("Accuracy (0-5):", 0, 5, 5, key=f"s_{node_id}")
                     reasoning = st.text_input("Logic Gap:", key=f"g_{node_id}")
-
-                    # Render cached Socratic hints if they exist for this specific node
                     if node_id in st.session_state.active_hint:
                         hint_data = st.session_state.active_hint[node_id]
                         if hint_data["type"] == "audit":
                             st.error(f"🚨 FORCED SOCRATIC AUDIT: {hint_data['text']}")
-                        else:
+                        elif hint_data["type"] == "available":
+                            if st.button("💡 Request Socratic Hint", key=f"req_{node_id}"):
+                                with st.spinner("Consulting Socratic Mentor..."):
+                                    fault_trace = reasoning if reasoning else "General conceptual gap."
+                                    hint_text = generate_socratic_hint(node['concept_title'], fault_trace, node_id)
+                                    st.session_state.active_hint[node_id] = {"type": "hint", "text": hint_text}
+                                    st.rerun()
+
+                        elif hint_data["type"] == "hint":
                             st.warning(f"💡 Socratic Hint: {hint_data['text']}")
+
 
                     if st.button("Commit Run", key=f"btn_{node_id}"):
                         with st.spinner("Synchronizing engine state..."):
@@ -93,17 +69,16 @@ def render_ui_dashboard():
                                 reasoning_gap=reasoning if reasoning else None
                             )
 
-                            # Handle Socratic failure states cleanly by caching them in session memory
+
                             if res.get("force_hint"):
                                 fault_trace = reasoning if reasoning else "Algorithmic execution failure."
                                 hint_text = generate_socratic_hint(node['concept_title'], fault_trace, node_id)
                                 st.session_state.active_hint[node_id] = {"type": "audit", "text": hint_text}
                                 st.rerun()
 
+
                             elif res.get("show_hint_button") or res.get("status") == "Failed":
-                                fault_trace = reasoning if reasoning else "General conceptual gap."
-                                hint_text = generate_socratic_hint(node['concept_title'], fault_trace, node_id)
-                                st.session_state.active_hint[node_id] = {"type": "hint", "text": hint_text}
+                                st.session_state.active_hint[node_id] = {"type": "available"}
                                 st.rerun()
 
                             elif score_input >= 4:

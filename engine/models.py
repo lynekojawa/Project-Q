@@ -16,3 +16,15 @@ class ConceptQuizPackage(BaseModel):
     concept_id: str
     mcq_items: List[MultipleChoiceQuestion] = Field(..., max_items=3)
     tracing_items:List[CodeTracingQuestion] = Field(..., max_items=2)
+
+class AutomatedConceptSummary(BaseModel):
+    """
+    Enforces a rigid structure for local LLM text distillation, ensuring technical data
+    is preserved without conversational drift or missing constraints.
+    """
+    concept_title: str = Field(..., description="The definitive, high-level name of the mathematical/algorithmic topic.")
+    core_thesis: str = Field(..., description="A dense 2-3 sentence overview explaining the core mechanics of the concept.")
+    time_complexity: str = Field(..., description="The rigorous Big-O time complexity bound (e.g., O(n log n)), or 'N/A'.")
+    space_complexity: str = Field(..., description="The definitive Big-O space complexity constraint bounds, or 'N/A'.")
+    critical_invariants: List[str] = Field(..., description="List of primary mathematical traits, invariants, proof constraints, or edge cases.")
+    clean_markdown_summary: str = Field(..., description="Detailed, technical explanation formatted in structural Markdown with no conversational intro/outro text.")
