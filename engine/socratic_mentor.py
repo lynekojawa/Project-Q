@@ -13,7 +13,7 @@ def generate_socratic_hint(concept_title: str, faulty_answer: str, concept_id: s
     """
     logs = get_recent_error_logs(concept_id)
 
-    historical_gaps = " | ".join([row[0] for row in logs]) if logs else "No prior history."
+    historical_gaps = " | ".join([logs]) if logs else "No prior history."
 
     system_instruction = (
         "You are an elite academic mentor guide following a strict Socratic method. "

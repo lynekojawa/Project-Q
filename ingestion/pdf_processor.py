@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 import pypdf
-from ingestion.sanitizer import sanitize_pdf_glyphs
+from ingestion.sanitizer import sanitize_all
 
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 if str(PROJECT_ROOT) not in sys.path:
@@ -29,7 +29,7 @@ def extract_text_from_pdf(pdf_path: Path, start_page: int = 0, end_page: int = N
                 extracted_chunks.append(page_text.strip())
         full_text = "\n".join(extracted_chunks)
 
-        return sanitize_pdf_glyphs(full_text)
+        return sanitize_all(full_text)
 
 if __name__ == "__main__":
     sample_pdf = PROJECT_ROOT / "data" /"raw" / "Algorithms-JeffE.pdf"

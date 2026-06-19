@@ -68,8 +68,12 @@ def get_recent_failure_count(concept_id: str) -> int:
         return 0
 
 def record_assessment(concept_id: str, result: str):
-    with sqlite3.connect(DB_PATH) as conn:
-        conn.execute("INSERT INTO assessment_history (concept_id, result) VALUES (?, ?)", (concept_id, result))
+    """Logs the assessment outcome with error handling"""
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.execute("INSERT INTO assessment_history (concept_id, result) VALUES (?, ?)", (concept_id, result))
+    except sqlite3.Error as e:
+        print(f"[DB ERROR] Assessment recording failed for {concept_id}: {e}")
 
 def check_consecutive_failure(concept_id: str) -> bool:
     """Check if recent three are all 'Failed'"""
@@ -92,13 +96,20 @@ def check_consecutive_failure(concept_id: str) -> bool:
         return False
 
 def reset_failure_history(concept_id: str):
-    with sqlite3.connect(DB_PATH) as conn:
-        conn.execute("DELETE FROM assessment_history WHERE concept_id = ?", (concept_id,))
+    """Resets fault tracking records with error handling."""
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.execute("DELETE FROM assessment_history WHERE concept_id = ?", (concept_id,))
+    except sqlite3.Error as e:
+        print(f"[DB ERROR] Failure history reset failed for {concept_id}: {e}")
 
 def apply_mentoring_recovery(concept_id: str):
-    with sqlite3.connect(DB_PATH) as conn:
-        conn.execute("UPDATE concept_nodes SET ease_factor = ease_factor + .2 WHERE concept_id = ?", (concept_id,))
-
+    """Adjusts ease_factor with error handling."""
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.execute("UPDATE concept_nodes SET ease_factor = ease_factor + .2 WHERE concept_id = ?", (concept_id,))
+    except sqlite3.Error as e:
+        print(f"[DB ERROR] Mentoring recovery failed for {concept_id}: {e}")
 def get_macro_metrics():
     try:
         with sqlite3.connect(DB_PATH) as conn:

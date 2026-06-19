@@ -36,3 +36,7 @@ However that's not exactly I was trying it is also part of it. Today we are jump
 (6/18) Started with Dante's commnets separating some functions into ledger_ops.py, the files are containing more functions and easy to get confused. <br>
 Before I was losing all of my mind I created the file that tracks the functions only. After all the project is over, will go over again to see if there<br>
 is any functions that are not used. Jumping into pdf_prosessor today. pdf_processor and summary pipelines and many movements happend.<br>
+(6/19) started with Dante comment. 
+1. db/ledger_ops = record_assessment and reset_failure_hisotry and apply_mentoring recovery has no error handling<br>
+2. ingestion/sanitizer.py = switching re.sub to str.replace so that this can be faster and cleaner, sanitize markdown and sanitize_pdf_glyphs are not connected<br>
+split sanitize markdown into sanitizemarkdown_artifact and sanitize_markdown then combines with danitize all for pipeline. 
