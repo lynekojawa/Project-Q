@@ -2,7 +2,9 @@ import sys
 import json
 import ollama
 import sqlite3
+import re
 from pathlib import Path
+from ingestion.sanitizer import sanitize_pdf_glyphs
 
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 if str(PROJECT_ROOT) not in sys.path:
@@ -31,30 +33,28 @@ def get_concept_title(concept_id: str) -> str:
     except sqlite3.Error as e:
         raise RuntimeError(f"DB lookup failed: {e}")
 
-def locate_concept_page_bounds(pdf_path: Path, target_title: str, next_title_hint: str = None) -> tuple:
-    """
-    Scans PDF page by page to find where target_title starts
-    and where next_title_hint begins (as the end boundary).
-    """
+def locate_concept_page_bounds(pdf_path: Path, target_title: str,
+                                next_title_hint: str = None,
+                                toc_skip: int = 20) -> tuple:
     start_page = None
     end_page = None
-    clean_target = target_title.strip().lower()
 
     with open(pdf_path, "rb") as f:
         import pypdf
         reader = pypdf.PdfReader(f)
         total_pages = len(reader.pages)
+        pattern = re.compile(rf"^\s*{re.escape(target_title)}", re.IGNORECASE | re.MULTILINE)
 
-        for page_idx in range(total_pages):
-            page_text = reader.pages[page_idx].extract_text()
-            if not page_text:
+        for page_idx in range(toc_skip, len(reader.pages)):  # ← skip TOC pages
+            raw_text = reader.pages[page_idx].extract_text()
+            if not raw_text:
                 continue
-            clean_page = page_text.lower()
 
-            if start_page is None and clean_target in clean_page:
-                if "contents" not in clean_page[:100]:
-                    start_page = page_idx
-                    print(f"Found '{target_title}' on page {page_idx}")
+            clean_page = sanitize_pdf_glyphs(raw_text).lower()
+
+            if start_page is None and pattern.search(clean_page):
+                start_page = page_idx
+                print(f"Found '{target_title}' on page {page_idx}")
 
             elif start_page is not None and next_title_hint:
                 if next_title_hint.strip().lower() in clean_page:
@@ -62,10 +62,14 @@ def locate_concept_page_bounds(pdf_path: Path, target_title: str, next_title_hin
                     print(f"Found boundary at page {page_idx}")
                     break
 
+
         if start_page is None:
             raise ValueError(f"Could not locate '{target_title}' in PDF.")
+
         if end_page is None:
-            end_page = min(start_page + 5, total_pages)
+            end_page = min(start_page + 8, total_pages)
+
+        end_page = min(end_page, start_page + 8)
 
     return start_page, end_page
 
@@ -113,8 +117,8 @@ def compile_concept_summary(concept_id: str, next_concept_id: str = None) -> Aut
 if __name__ == "__main__":
     try:
         summary = compile_concept_summary(
-            concept_id="recursion_1_3_1_3_tower_of_hanoi",
-            next_concept_id="recursion_1_4_1_4_mergesort"
+            concept_id="np_hardness_12_2_12_2_p_versus_np",
+            next_concept_id="np_hardness_12_3_12_3_np_hard_np_easy_and_np_complete"
         )
         print("\nSummary:")
         print(json.dumps(summary.model_dump(), indent=2))

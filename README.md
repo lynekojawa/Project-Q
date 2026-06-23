@@ -39,4 +39,25 @@ is any functions that are not used. Jumping into pdf_prosessor today. pdf_proces
 (6/19) started with Dante comment. 
 1. db/ledger_ops = record_assessment and reset_failure_hisotry and apply_mentoring recovery has no error handling<br>
 2. ingestion/sanitizer.py = switching re.sub to str.replace so that this can be faster and cleaner, sanitize markdown and sanitize_pdf_glyphs are not connected<br>
-split sanitize markdown into sanitizemarkdown_artifact and sanitize_markdown then combines with danitize all for pipeline. 
+split sanitize markdown into sanitizemarkdown_artifact and sanitize_markdown then combines with danitize all for pipeline.<br>
+(6/23) Today we are continue to fix. <br>
+On last session AI wasn't able to detect the titles correctly yet, so we are working on it. <br>
+hallucinating is bit huge, 1.3 tower of hanoi test has passed however struggling with 3.6 longestincreaing subsequence<br>
+For some reason llama thinks ch 2.6 to 2.7 longest increasing subsequence is the chapter it needs to work on. <br>
+3. ubmitting to LLM: [np_hardness_12_2_12_2_p_versus_np] -> '12.2 P versus NP'
+
+Summary:
+{
+  "concept_title": "12.2 P versus NP",<br>
+  "core_thesis": "There is no known fast algorithm for CircuitSat.",<br>
+  "time_complexity": "O(nc) for some constant c, where n is the size of the input",<br>
+  "space_complexity": "N/A",<br>
+  "critical_invariants": [<br>
+    "P is the set of decision problems that can be solved in polynomial time.",<br>
+    "NP is the set of decision problems with the following property: If the answer is Yes, then there is a proof of this fact that can be checked in polynomial time.",<br>
+    "co-NP is essentially the opposite of NP. If the answer to a problem in co-NP is No, then there is a proof of this fact that can be checked in polynomial time."
+  ],<br>
+  "clean_markdown_summary": "The P versus NP problem deals with the relationship between decision problems that can be solved quickly (P) and those that can be verified quickly if we have the solution (NP). The circuit satis\ufb01ability problem is an example of a problem in NP, but it's widely believed to not be in P or co-NP. Researchers have difficulty figuring out exactly which problems can be solved quickly and which cannot."
+}<br>
+
+wooohooo! finally! this took so longggg<br>

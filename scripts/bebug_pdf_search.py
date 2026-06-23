@@ -7,6 +7,7 @@ PDF_TARGET = PROJECT_ROOT / "data" / "raw" / "Algorithms-JeffE.pdf"
 def find_text_in_pdf(pdf_path: Path, search_term: str):
     with open(pdf_path, "rb") as f:
         reader = pypdf.PdfReader(f)
+        print(f"DEBUG: Page 103 Text: {reader.pages[103].extract_text()[:500]}")
         for page_idx in range(len(reader.pages)):
             page_text = reader.pages[page_idx].extract_text()
             if not page_text:

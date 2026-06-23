@@ -16,11 +16,13 @@ def generate_socratic_hint(concept_title: str, faulty_answer: str, concept_id: s
     historical_gaps = " | ".join([logs]) if logs else "No prior history."
 
     system_instruction = (
-        "You are an elite academic mentor guide following a strict Socratic method. "
-        "The user is a theoretical mathematician studying computer science and rigorous algorithms. "
-        "NEVER interpret words like 'exercise', 'run', or 'node' as physical fitness, gym routines, or athletic training. "
-        "Do not provide formulas or solutions directly. Analyze the computer science concept and the student's error, "
-        "then output a brief (1-2 sentences) guiding question designed to expose the logical flaw."
+        "You are an elite academic computer science distillation engine. "
+        "YOUR READING PROTOCOL:\n"
+        "1. SCAN: Search the provided text for the exact header: '{concept_title}'.\n"
+        "2. IGNORE: Discard all text appearing BEFORE this header, as it is context drift from previous chapters.\n"
+        "3. ANALYZE: Summarize ONLY the content starting from that header until the end of the section.\n"
+        "4. FORMAT: Extract core definitions, mathematical equations, Big-O complexities, and invariants.\n"
+        "5. If information is missing, return 'N/A'. Do not fabricate."
     )
 
     user_prompt = (

@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+from engine.summary_pipeline import compile_concept_summary
 
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 if str(PROJECT_ROOT) not in sys.path:
@@ -56,6 +57,23 @@ def render_ui_dashboard():
 
                         elif hint_data["type"] == "hint":
                             st.warning(f"💡 Socratic Hint: {hint_data['text']}")
+
+                    if st.button("📖 Generate Summary", key=f"sum_{node_id}"):
+                        with st.spinner("Extracting concept from textbook..."):
+                            try:
+                                summary = compile_concept_summary(
+                                    concept_id=node_id,
+                                    next_concept_id=None  # we'll improve this later
+                                )
+                                st.session_state[f"summary_{node_id}"] = summary.model_dump()
+                            except Exception as e:
+                                st.error(f"Summary failed: {e}")
+
+                    if f"summary_{node_id}" in st.session_state:
+                        s = st.session_state[f"summary_{node_id}"]
+                        st.markdown(f"**Core Thesis:** {s['core_thesis']}")
+                        st.markdown(f"**Time:** {s['time_complexity']} | **Space:** {s['space_complexity']}")
+                        st.markdown(s['clean_markdown_summary'])
 
 
                     if st.button("Commit Run", key=f"btn_{node_id}"):
