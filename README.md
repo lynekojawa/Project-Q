@@ -61,3 +61,7 @@ Summary:
 }<br>
 
 wooohooo! finally! this took so longggg<br>
+(6/24) continue on the project, yesterday Ui connection and summary pipeline broken going to working on it. <br>
+Moved podo into the different room. currently recalibrating the agents<br> 
+Page 118: '3.1. m¯atr¯avr.tta\nf2 f1\nf1 f0f1 f0\nf3\nf2 f1\nf1 f0\nf2\nf1 f0\nf3f4\nf2 f1\nf1 f0\nf3\nf2 f1\nf1 f0\nf2\nf1 f0\n011235813\nf5\nf3f4\nf3\nf1\nf1 f0\nf2\nf4\nf6 f5\nf7\nf2\nfigure 3.2.the recursion tree forf7 trimmed by memo'<br>
+bro! what is thisssssssss! 3.1 martravrtta!!! aaaaaaa!!!

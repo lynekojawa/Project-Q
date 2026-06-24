@@ -1,11 +1,11 @@
 import sys
 from pathlib import Path
-from engine.summary_pipeline import compile_concept_summary
 
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
+from engine.summary_pipeline import compile_concept_summary
 from db.ledger_ops import get_chapters_and_nodes, get_macro_metrics
 from engine.evaluation import process_node_review
 from engine.socratic_mentor import generate_socratic_hint
@@ -75,36 +75,26 @@ def render_ui_dashboard():
                         st.markdown(f"**Time:** {s['time_complexity']} | **Space:** {s['space_complexity']}")
                         st.markdown(s['clean_markdown_summary'])
 
-
                     if st.button("Commit Run", key=f"btn_{node_id}"):
-                        with st.spinner("Synchronizing engine state..."):
-                            res = process_node_review(
-                                concept_id=node_id,
-                                current_interval=node['current_interval'],
-                                current_ef=node['ease_factor'],
-                                current_rep=node['repetitions'],
-                                user_score=score_input,
-                                reasoning_gap=reasoning if reasoning else None
-                            )
+                        with st.spinner("Synchronizing..."):
+                            res = process_node_review(...)
 
+                            # UI 로직 단순화
+                            if res["force_hint"]:
+                                with st.spinner("System Audit: Triggering Forced Socratic Intervention..."):
+                                    fault_trace = reasoning if reasoning else "Algorithmic execution failure."
+                                    hint_text = generate_socratic_hint(node['concept_title'], fault_trace, node_id)
+                                    st.session_state.active_hint[node_id] = {"type": "audit", "text": hint_text}
+                                    st.rerun()
 
-                            if res.get("force_hint"):
-                                fault_trace = reasoning if reasoning else "Algorithmic execution failure."
-                                hint_text = generate_socratic_hint(node['concept_title'], fault_trace, node_id)
-                                st.session_state.active_hint[node_id] = {"type": "audit", "text": hint_text}
+                            elif res["status"] == "Passed":
+                                st.success(res["message"])  # 엔진이 보내준 메시지 출력
                                 st.rerun()
-
-
-                            elif res.get("show_hint_button") or res.get("status") == "Failed":
-                                st.session_state.active_hint[node_id] = {"type": "available"}
-                                st.rerun()
-
-                            elif score_input >= 4:
-                                # Clear active hints on success
-                                if node_id in st.session_state.active_hint:
-                                    del st.session_state.active_hint[node_id]
-                                st.success(f"🎉 Core Matrix Updated. Status: {res.get('status')}")
-                                st.rerun()
+                            else:
+                                st.warning(res["message"])
+                                if res["show_hint_button"]:
+                                    st.session_state.active_hint[node_id] = {"type": "available"}
+                                    st.rerun()
 
 
 if __name__ == "__main__":

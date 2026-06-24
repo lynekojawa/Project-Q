@@ -33,19 +33,25 @@ def get_concept_title(concept_id: str) -> str:
     except sqlite3.Error as e:
         raise RuntimeError(f"DB lookup failed: {e}")
 
+
 def locate_concept_page_bounds(pdf_path: Path, target_title: str,
                                 next_title_hint: str = None,
                                 toc_skip: int = 20) -> tuple:
     start_page = None
     end_page = None
 
+    search_title = re.sub(r'^\d+(\.\d+)*\.?\s*', '', target_title).strip()
+    pattern = re.compile(
+        rf"^\s*\d+(\.\d+)*\.?\s*{re.escape(search_title)}",
+        re.IGNORECASE | re.MULTILINE
+    )
+
     with open(pdf_path, "rb") as f:
         import pypdf
         reader = pypdf.PdfReader(f)
         total_pages = len(reader.pages)
-        pattern = re.compile(rf"^\s*{re.escape(target_title)}", re.IGNORECASE | re.MULTILINE)
 
-        for page_idx in range(toc_skip, len(reader.pages)):  # ← skip TOC pages
+        for page_idx in range(toc_skip, total_pages):
             raw_text = reader.pages[page_idx].extract_text()
             if not raw_text:
                 continue
@@ -57,11 +63,11 @@ def locate_concept_page_bounds(pdf_path: Path, target_title: str,
                 print(f"Found '{target_title}' on page {page_idx}")
 
             elif start_page is not None and next_title_hint:
-                if next_title_hint.strip().lower() in clean_page:
+                next_search = re.sub(r'^\d+(\.\d+)*\.?\s*', '', next_title_hint).strip()
+                if next_search.lower() in clean_page:
                     end_page = page_idx
                     print(f"Found boundary at page {page_idx}")
                     break
-
 
         if start_page is None:
             raise ValueError(f"Could not locate '{target_title}' in PDF.")
@@ -113,6 +119,36 @@ def compile_concept_summary(concept_id: str, next_concept_id: str = None) -> Aut
 
     return AutomatedConceptSummary.model_validate_json(response.message.content.strip())
 
+
+def scan_all_section_titles(pdf_path: Path, toc_skip: int = 20):
+    import pypdf
+    import re
+
+    # Pattern to find section headings like "3.1." or "1.4." at start of line
+    section_pattern = re.compile(r'^\s*(\d+\.\d+)\.?\s+(.+)', re.MULTILINE)
+
+    found_sections = {}
+
+    with open(pdf_path, "rb") as f:
+        reader = pypdf.PdfReader(f)
+
+        for page_idx in range(toc_skip, len(reader.pages)):
+            raw = reader.pages[page_idx].extract_text()
+            if not raw:
+                continue
+            clean = sanitize_pdf_glyphs(raw)
+
+            matches = section_pattern.findall(clean)
+            for num, title in matches:
+                title_clean = title.split('\n')[0].strip()[:50]
+                if len(title_clean) > 3:
+                    key = f"{num} {title_clean}"
+                    if key not in found_sections:
+                        found_sections[key] = page_idx
+                        print(f"Page {page_idx:4d} | {num} | {repr(title_clean)}")
+
+
+scan_all_section_titles(PDF_TARGET)
 
 if __name__ == "__main__":
     try:
