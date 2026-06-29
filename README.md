@@ -64,4 +64,51 @@ wooohooo! finally! this took so longggg<br>
 (6/24) continue on the project, yesterday Ui connection and summary pipeline broken going to working on it. <br>
 Moved podo into the different room. currently recalibrating the agents<br> 
 Page 118: '3.1. m¯atr¯avr.tta\nf2 f1\nf1 f0f1 f0\nf3\nf2 f1\nf1 f0\nf2\nf1 f0\nf3f4\nf2 f1\nf1 f0\nf3\nf2 f1\nf1 f0\nf2\nf1 f0\n011235813\nf5\nf3f4\nf3\nf1\nf1 f0\nf2\nf4\nf6 f5\nf7\nf2\nfigure 3.2.the recursion tree forf7 trimmed by memo'<br>
-bro! what is thisssssssss! 3.1 martravrtta!!! aaaaaaa!!!
+
+bro! what is thisssssssss! 3.1 martravrtta!!! aaaaaaa!!!<br>
+(6/29) I decided to wrap this project because it is beyound my knowledge at the moment and here is why I am wrapping up. <br>
+My original thought was that creating a program it generates the summary then I will read and THEN <br>
+it will give me multiple chose and short answer questions so that I can have ultimate learning process. However, there are many things<br>
+that didn't worked out<br>
+First, pdf parsing was nightmare I have attached (link) how the titles looks like you can see weird letters plus some are not appear<br>
+Second, Hallucination even though I successfully navigate llama to summarizing the book, it started hallucinate after I connected<br>
+into ui.<br>
+Third, This was largest project I have done with many different folder, before this mine was alot simpler I only needed engine, app<br>
+ui and db but now they are all folders containing many files, and checking and debugging folders, so I had hard time to track all the pipelines<br>
+This shows that I am still have many things to learn, which I will get used to it eventually. and That will be my next project. <br>
+I am heading to netword folder visualizer in one repo, and for the proto type I am going to let it analogue it will be user typing<br>
+Those folder names and files, and it will show the relationships. <br>
+Here are things that I wished to improve in ui<br>
+one, chapter orders are in A-Z so when I was generating all of those summary to wrapup report, I had to look back concept map to trace the chapter<br>
+two, Time, it took too long, for summarizing one section it took longer than 45 sec sometimes minutes <br>
+What did I learn from this project<br>
+I learned that when project is large you need to keep the structures and tracing files and keep the pipeline is important<br>
+I still managed to 91 chapter out of 114 study node summary, but no gurantee for the hallucination free. 
+I noticed that architectural decisions, like one thing I thought was make user to upload TOC only then use LLM to create concept map <br>
+so that user can confirm. so applying human in loop into the architecture to make it smoother. <br>
+I also was responsible, in the middle of the project I have noticed that my agents were off, because they were high weighted the duolingo concept<br>
+Because when planning stage I was describe this project Q as Duolingo, so I had to re-direct them my intention is like a duolingo but summary is first<br>
+This project has started with because I was trying to study Algorithms and wanted to speed up so I feed that prompt and only chapter 1-3 <br>
+and it gave me interesting result, (link). That was how it begins<br>
+Also, I made the final decision of wrap this project, because I thought it is not worth to proceed at the moment. Firstable I am new and started coding hard <br>
+from this april 2026, I am barely new in computer world and I found that the more I project I can do, and deploy with right feature that will help me to learn coding <br>
+and programming fast. Second, it was my first local LLM exprience and I do have fair understanding about platform and web AI's but running a local LLM was first<br>
+so I did not know quite things about it yet, and third, still my project is successful in some way. as mathematician I have natural habit of <br>
+finding what's wrong, or using a wrong context and the 91 generated summaries I can tell it is right or not, and the final conculusion is <br>
+Euclid said There is no royal road to geometry, and it can expand to all study. There is no royal road. lol and I was imagining to make royal road<br>
+Still it was fun, I was able to read the book and learned alot.<br>
+Here are some interesting hallucinating patterns I noticed with my agents, because of noralizations and level of project I have noticed interesting patterns<br>
+First, They avoid the answer and closing session early. it is famous fact that AI doesn't good at clocking and my agents was pretending <br>
+that it was in middle of the project let's say around 3 pm and it pretend it is either weekends or end of the night<br>
+Second, They won't say that they cannot do the work, they still give me something or directing to the other directions<br>
+Third, They fix the code but same code similar (unsolved) structure but with diffrent variale name. Especially Gemini<br>
+However, this can fixed easily by prompting hard: do not change the variable name. <br>
+One thing I need to more care about as human is that:<br>
+Keep every agent in right track, and aware of Instant answer. what I meant by instant answer is that they will ask me to <br>
+few lines of output or parsed data then generalizing the pattern only with two few examples. That was the moment that as human<br>
+The wrapupreport is necessary for make conclusion. right this reminds me I was arguring aboug generalization, One thing I was aware <br>
+with the pdf viewer is that the book I was trying to parsing had 14-16 pages of prepage before it start to counts page 1. so you can tell<br>
+the printing page and actual pdf pages are off, and this matter alot becuase I need to give a boundary to local LLM to where to start the summary<br>
+and I worked with one book, however I wanted to create the summarizing pipeline for ANY Book, but with the boundary problem my agents were<br>
+oh it's simple we will fix page 14 to where it starts the summary. and I said so many no to them, I am not creating a program that only does<br>
+one book. I think that was so far I am remembering. :D 
